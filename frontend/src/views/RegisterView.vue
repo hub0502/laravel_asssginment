@@ -12,19 +12,21 @@
           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           v-model="name"
           type="text"
-          placeholder="Username"
+          placeholder="name"
         />
       </div>
       <div class="mb-4">
         <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
           Email
         </label>
+
         <input
           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           v-model="email"
           type="email"
           placeholder="Email"
         />
+        <p class="text-red-500 text-xs italic">don't exists</p>
       </div>
       <div class="mb-6">
         <label
@@ -37,7 +39,7 @@
           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
           type="password"
           v-model="password"
-          placeholder="************"
+          placeholder="min 6"
         />
         <p class="text-red-500 text-xs italic hidden">
           Please choose a password.
@@ -47,7 +49,7 @@
         <button
           class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline m-auto"
           type="button"
-          @click="sendPost()"
+          @click="btn_click()"
         >
           Sign Up
         </button>
@@ -69,6 +71,15 @@ export default {
     };
   },
   methods: {
+    btn_click() {
+      let status = this.checkEmp();
+      if (status == "true") {
+        this.sendPost();
+      } else {
+        alert(status);
+      }
+    },
+
     sendPost() {
       this.axios
         .post(`http://${window.location.hostname}:8000/api/register`, {
@@ -77,16 +88,26 @@ export default {
           password: this.password,
         })
         .then((res) => {
-          if (res.status == 200) {
+          if (res.data.status == "failed") {
+            alert(res.data.msg);
+            this.email = "";
+          } else if (res.status == 200) {
             alert("회원가입에 성공하셨습니다.");
             this.setCookie("test", res.data.authorisation.token, 1);
             this.sendToken(res.data.authorisation.token);
-            // window.location.href = `/login`;
-          } else {
-            console.log("failed");
-            console.log(res);
+            window.location.href = `/login`;
           }
         });
+      // .catch((err) => {
+      //   if (err.response.status == 422) {
+      //     alert("email exists ");
+      //     this.name = "";
+      //     this.email = "";
+      //     this.password = "";
+      //   } else {
+      //     console.log(err);
+      //   }
+      // });
     },
     sendToken(token) {
       this.axios
@@ -102,7 +123,21 @@ export default {
       exdate.setMinutes(exdate.getMinutes() + miuntes);
       const cookie_value =
         value + (miuntes == null ? "" : "; expires=" + exdate);
-      document.cookie = cookie_name + "=" + cookie_value;
+      document.cookie = escape(cookie_name) + "=" + escape(cookie_value);
+    },
+    checkEmp() {
+      let msg = "";
+      if (this.name == "") {
+        msg = "name empty";
+      } else if (this.email == "") {
+        msg = "email empty";
+      } else if (this.password == "") {
+        msg = "password empty";
+      }
+      if (msg == "") {
+        return "true";
+      }
+      return msg;
     },
   },
 };
