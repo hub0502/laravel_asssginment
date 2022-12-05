@@ -70,7 +70,6 @@ export default {
   },
   methods: {
     sendPost() {
-      console.log(`http://${window.location.hostname}:8000/api/register`);
       this.axios
         .post(`http://${window.location.hostname}:8000/api/register`, {
           name: this.name,
@@ -80,7 +79,7 @@ export default {
         .then((res) => {
           if (res.status == 200) {
             alert("회원가입에 성공하셨습니다.");
-            document.cookie = `logged=${res.data.authorisation.token}`;
+            this.setCookie("test", res.data.authorisation.token, 1);
             this.sendToken(res.data.authorisation.token);
             // window.location.href = `/login`;
           } else {
@@ -97,6 +96,13 @@ export default {
         .then((res) => {
           console.log(res);
         });
+    },
+    setCookie: (cookie_name, value, miuntes) => {
+      const exdate = new Date();
+      exdate.setMinutes(exdate.getMinutes() + miuntes);
+      const cookie_value =
+        value + (miuntes == null ? "" : "; expires=" + exdate);
+      document.cookie = cookie_name + "=" + cookie_value;
     },
   },
 };
