@@ -72,15 +72,19 @@ export default {
         .then((res) => {
           if (res.status == 200) {
             alert("logged");
+
+            let expires = new Date();
+            expires.setMinutes(expires.getMinutes() + 60);
+            document.cookie = `logged=${
+              res.data.authorisation.token
+            };expires=${expires.toGMTString()}`;
+
             window.location.href = "/";
           }
         })
         .catch((err) => {
           console.log(err);
         });
-    },
-    print() {
-      console.log("d");
     },
   },
 };

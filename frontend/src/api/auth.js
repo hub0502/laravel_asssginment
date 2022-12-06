@@ -1,8 +1,16 @@
 import http from "./http";
 
-export async function login(userid, password) {
+export async function login(userEmail, password) {
   return http.post("/login", {
-    email: userid,
+    email: userEmail,
     password: password,
+  });
+}
+
+export async function register(userName, userEmail, userPassword) {
+  return http.post("/register", {
+    name: userName,
+    email: userEmail,
+    password: userPassword,
   });
 }

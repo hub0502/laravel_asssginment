@@ -62,6 +62,7 @@
 </template>
 
 <script>
+import * as authApi from "@/api/auth";
 export default {
   data() {
     return {
@@ -74,39 +75,29 @@ export default {
     btn_click() {
       let status = this.checkEmp();
       if (status == "true") {
-        this.sendPost();
+        this.createUser();
       } else {
         alert(status);
       }
     },
 
-    sendPost() {
-      this.axios
-        .post(`http://${window.location.hostname}:8000/api/register`, {
-          name: this.name,
-          email: this.email,
-          password: this.password,
-        })
+    createUser() {
+      authApi
+        .register(this.name, this.email, this.password)
         .then((res) => {
           if (res.data.status == "failed") {
             alert(res.data.msg);
             this.email = "";
-          } else if (res.status == 200) {
-            alert("회원가입에 성공하셨습니다.");
-
+          } else {
+            alert("create regist successful");
             window.location.href = `/login`;
           }
+        })
+        .catch((err) => {
+          alert("Email format incorrect");
+          this.email = "";
+          console.log(err);
         });
-      // .catch((err) => {
-      //   if (err.response.status == 422) {
-      //     alert("email exists ");
-      //     this.name = "";
-      //     this.email = "";
-      //     this.password = "";
-      //   } else {
-      //     console.log(err);
-      //   }
-      // });
     },
 
     checkEmp() {

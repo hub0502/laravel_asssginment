@@ -1,7 +1,11 @@
 <template>
-  <div>asd</div>
+  <div><board-compo></board-compo></div>
 </template>
 
 <script>
-export default {};
+import BoardCompo from "../components/BoardCompo.vue";
+
+export default {
+  component: { BoardCompo },
+};
 </script>
