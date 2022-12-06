@@ -11,7 +11,8 @@ class AuthController extends Controller
 {
     //
     public function __construct(){
-        $this->middleware('auth:api', ['except' => ['login', 'register','get_user']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register','get_user', 'get_token']]);
+        
     }
 
     public function login(Request $request){
@@ -102,6 +103,12 @@ class AuthController extends Controller
 
         $user = Auth::authenticate($request->token);
         return response()->json(['user' => $user]);
+    }
+
+    public function get_token(Request $request){
+        return response()->json([
+            'cookie' => $request->header,
+        ]);
     }
     
 }

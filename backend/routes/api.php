@@ -25,6 +25,7 @@ Route::controller(AuthController::class)->group(function(){
     Route::post('logout', 'logout');
     Route::post('refresh', 'refresh');
     Route::post('get_user', 'get_user');
+    Route::get('get_token', 'get_token');
 });
 
 Route::controller(BoardController::class)->group(function(){

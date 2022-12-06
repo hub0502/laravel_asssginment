@@ -1,9 +1,18 @@
 <template>
   <div>
-    <nav>
+    <nav class="p-30">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link> |
-      <router-link to="/login">Login</router-link> |
+      <!-- <a
+        v-if="cookies.indexOf('logged') > -1"
+        @click="logout()"
+        class="cursor-pointer"
+        >Logout</a
+      > -->
+      <a v-if="false"></a>
+      <router-link to="/login" v-else>Login</router-link>
+
+      |
       <router-link to="/register">register</router-link>
     </nav>
     <router-view />
@@ -11,7 +20,26 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      // cookies: [],
+    };
+  },
+  mounted() {
+    // let sp_cookie = document.cookie.split(";");
+    // cookies.forEach((data) => {
+    //   splitedCookie[data.split("=")[0].replaceAll(" ", "")] =
+    //     data.split("=")[1];
+    // });
+    // sp_cookie.forEach((data) => {
+    //   this.cookies.push(data.split("=")[0].replaceAll(" ", ""));
+    // });
+  },
+  methods: {
+    logout() {},
+  },
+};
 </script>
 
 <style>
