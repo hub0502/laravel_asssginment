@@ -23,19 +23,10 @@
 export default {
   data() {
     return {
-      // cookies: [],
+      cookies: {},
     };
   },
-  mounted() {
-    // let sp_cookie = document.cookie.split(";");
-    // cookies.forEach((data) => {
-    //   splitedCookie[data.split("=")[0].replaceAll(" ", "")] =
-    //     data.split("=")[1];
-    // });
-    // sp_cookie.forEach((data) => {
-    //   this.cookies.push(data.split("=")[0].replaceAll(" ", ""));
-    // });
-  },
+  mounted() {},
   methods: {
     logout() {},
   },

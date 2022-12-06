@@ -13,7 +13,7 @@
           id="username"
           type="text"
           placeholder="Email"
-          v-model="email"
+          v-model="userid"
         />
       </div>
       <div class="mb-6">
@@ -53,78 +53,34 @@
     <p class="text-center text-gray-500 text-xs">
       &copy;2020 Acme Corp. All rights reserved.
     </p>
-    {{ cookies }}
   </div>
 </template>
 
 <script>
+import * as authApi from "@/api/auth";
 export default {
   data() {
     return {
-      email: "",
+      userid: "",
       password: "",
-      cookies: {},
     };
   },
-  mounted() {
-    let cookies = document.cookie.split(";");
-
-    cookies.forEach((data) => {
-      this.cookies[data.split("=")[0].replaceAll(" ", "")] = data
-        .split("=")[1]
-        .replaceAll(" ", "");
-    });
-  },
   methods: {
-    login(email, password) {
-      console.log(this.dateCheck(this.cookies["logged_avaliableTime"]));
-      if (email == "") {
-        alert("email empty");
-      } else if (password == "") {
-        alert("password empty");
-      } else {
-        this.axios
-          .post(`http://${window.location.hostname}:8000/api/login`, {
-            email: this.email,
-            password: this.password,
-          })
-          .then((res) => {
-            if (res.status == 200) {
-              alert("login success");
-              this.setCookie("logged", res.data.authorisation.token, 1);
-              this.sendToken(res.data.authorisation.token);
-              // window.location.href = "/";
-            }
-            console.log(res);
-          });
-        // .catch();
-      }
-    },
-    dateCheck(date) {
-      let now = new Date();
-      console.log(now);
-      console.log(date);
-      if (now > date) {
-        return false;
-      }
-      return true;
-    },
-    sendToken(token) {
-      this.axios
-        .post(`http://${window.location.hostname}:8000/api/get_user`, {
-          token: token,
-        })
+    login() {
+      authApi
+        .login(this.userid, this.password)
         .then((res) => {
-          console.log(res);
+          if (res.status == 200) {
+            alert("logged");
+            window.location.href = "/";
+          }
+        })
+        .catch((err) => {
+          console.log(err);
         });
     },
-    setCookie: (cookie_name, value, minutes) => {
-      const exdate = new Date();
-      exdate.setMinutes(exdate.getMinutes() + minutes);
-      const cookie_value =
-        value + (minutes == null ? "" : "; expires=" + exdate.toGMTString());
-      document.cookie = cookie_name + "=" + cookie_value;
-      // document.cookie = cookie_name + "_avaliableTime" + "=" + `${exdate}`;
+    print() {
+      console.log("d");
     },
   },
 };

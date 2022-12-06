@@ -1,5 +1,7 @@
 // export default {
 //   install(Vue) {
-//     Vue.prototype.$sendPost = function(email)
+//     Vue.config.prototype.$getCookies = function () {
+//       return "hi";
+//     };
 //   },
 // };
