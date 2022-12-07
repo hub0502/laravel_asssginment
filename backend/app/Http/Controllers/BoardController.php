@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Board;
 
 class BoardController extends Controller
 {
     //
     public function __construct(){
-        $this->middleware('auth:api', ['except' => ['index', 'store']]);
+        $this->middleware('auth:api', ['except' => ['index', 'show']]);
     }
 
     public function index(){
@@ -23,17 +24,22 @@ class BoardController extends Controller
     public function store(Request $request){
         $request->validate([
             'title' => 'required|string|max:255',
-            'content' => 'required|string|max:255'
+            'content' => 'required|string|max:255',
+            'token' => 'required|string'
         ]);
+
+        $user = Auth::authenticate($request->token);
+
 
         $board = Board::create([
             'title' => $request->title,
             'content' => $request->content,
-            'userId' => $request->userId
+            'userId' => $user->id,
         ]);
 
+
         return response()->json([
-            'title' => 'success',
+            'status' => 'success',
             'message' => 'Todo created successfully',
             'board' => $board,
         ]);

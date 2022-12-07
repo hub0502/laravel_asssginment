@@ -13,7 +13,7 @@
           id="username"
           type="text"
           placeholder="Email"
-          v-model="userid"
+          v-model="email"
         />
       </div>
       <div class="mb-6">
@@ -51,7 +51,7 @@
       </div>
     </form>
     <p class="text-center text-gray-500 text-xs">
-      &copy;2020 Acme Corp. All rights reserved.
+      &copy;2022 Acme Corp. All rights reserved.
     </p>
   </div>
 </template>
@@ -61,14 +61,14 @@ import * as authApi from "@/api/auth";
 export default {
   data() {
     return {
-      userid: "",
+      email: "",
       password: "",
     };
   },
   methods: {
     login() {
       authApi
-        .login(this.userid, this.password)
+        .login(this.email, this.password)
         .then((res) => {
           if (res.status == 200) {
             alert("logged");
@@ -78,7 +78,6 @@ export default {
             document.cookie = `logged=${
               res.data.authorisation.token
             };expires=${expires.toGMTString()}`;
-
             window.location.href = "/";
           }
         })

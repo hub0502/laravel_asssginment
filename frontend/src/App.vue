@@ -2,55 +2,57 @@
   <div>
     <nav class="p-30">
       <router-link to="/">Home</router-link><a> | </a>
-      <router-link to="/about">About</router-link> <a> | </a>
+
       <!-- <a
         v-if="cookies.indexOf('logged') > -1"
         @click="logout()"
         class="cursor-pointer"
         >Logout</a
       > -->
-      <a v-if="false"></a>
+      <a v-if="logged !== false" @click="logout()">Logout</a>
       <router-link to="/login" v-else>Login</router-link>
       <a> | </a>
-      <router-link to="/register">register</router-link>
+      <router-link to="/register">Register</router-link>
+      <router-link to="/myboard" v-if="logged !== false"
+        ><a> | </a>Myboard</router-link
+      >
     </nav>
 
-    <div v-if="this.$modalOpened">
-      <write-board-compo></write-board-compo>
-    </div>
-    {{ opened }}
-
-    <div
-      id="boardModalBtn"
-      class="w-[15vw] h-[7vh] rounded-full max-w-[150px] min-h-[60px] text-[30pt] leading-[10vh]"
-      @click="modalOpenFunc()"
-    >
-      new
-    </div>
-
     <router-view />
+    <div class="h-[200px]"></div>
   </div>
 </template>
 
 <script>
-import WriteBoardCompo from "./components/WriteBoardCompo.vue";
+import * as token from "./api/token";
 export default {
-  components: {
-    WriteBoardCompo,
-  },
+  components: {},
   data() {
-    return {
-      cookies: {},
-      opened: this.$modalOpened,
-    };
+    return { logged: {} };
   },
   methods: {
-    modalOpenFunc() {
-      this.$modalOpened = !this.$modalOpened;
-      this.opened = this.$modalOpened;
-      console.log(this.opened);
+    logout() {
+      let expires = new Date();
+      expires.setMinutes(expires.getMinutes() - 1);
+      document.cookie = `logged=no;expires=${expires.toGMTString()}`;
+      window.location.href = "/";
     },
   },
+  mounted() {
+    this.logged = token.getToken();
+  },
+  // watch: {
+  //   $route(to, form) {
+  //     if (to.path !== form.path) {
+  //       this.$cookie = {};
+  //       let cookie = document.cookie.split(";");
+  //       cookie.forEach((data) => {
+  //         this.$cookie[data.split("=")[0]] = data.split("=")[1];
+  //       });
+  //       console.log(this.$cookie);
+  //     }
+  //   },
+  // },
 };
 </script>
 
@@ -75,24 +77,10 @@ board {
   font-weight: bold;
   font-size: clamp(15pt, 2.5vw, 30pt);
   color: #2c3e50;
+  cursor: pointer;
 }
 
 nav a.router-link-exact-active {
   color: #42b983;
-}
-#boardModalBtn {
-  background-color: #40f7a5;
-  color: #2c3e50;
-  line-height: 7vh;
-  box-shadow: 1px 1px 10px 1px #98c4b0;
-  font-size: clamp(15pt, 2.5vw, 30pt);
-  font-weight: bold;
-  cursor: pointer;
-  position: fixed;
-  right: 5%;
-  bottom: 10%;
-}
-#modal_bg {
-  opacity: 70%;
 }
 </style>

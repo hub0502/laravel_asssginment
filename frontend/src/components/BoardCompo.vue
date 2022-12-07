@@ -1,28 +1,18 @@
 <template>
-  <div></div>
+  <div>
+    {{ boardAbout }} <br />
+    title : {{ boardAbout.title }} <br />
+    content : {{ boardAbout.content }} <br />
+    creater : {{ boardAbout.id }} <br />
+    created_at : {{ boardAbout.created_at }} <br />
+    updated_at : {{ boardAbout.updated_at }}
+  </div>
 </template>
 
 <script>
-import * as boardsApi from "@/api/boards.js";
 export default {
-  data() {
-    return {
-      boardList: [],
-    };
-  },
-  methods: {},
-  mounted() {
-    boardsApi
-      .index()
-      .then((res) => {
-        if (res.status == 200) {
-          this.boardList.push(res);
-          console.log(res);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  props: {
+    boardAbout: Array,
   },
 };
 </script>

@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import LoginView from "../views/LoginView.vue";
 import RegisterView from "../views/RegisterView.vue";
+import MyBoardView from "../views/MyBoardView.vue";
 
 const routes = [
   {
@@ -10,7 +11,7 @@ const routes = [
     component: HomeView,
   },
   {
-    path: "/about",
+    path: "/about/:id",
     name: "about",
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
@@ -28,6 +29,11 @@ const routes = [
     path: "/register",
     name: "register",
     component: RegisterView,
+  },
+  {
+    path: "/myboard",
+    name: "myboard",
+    component: MyBoardView,
   },
 ];
 
