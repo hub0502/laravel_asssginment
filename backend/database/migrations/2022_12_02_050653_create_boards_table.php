@@ -17,7 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('content');
-            $table->string('userId');
+            $table->integer('userId');
+            $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();
         });
     }

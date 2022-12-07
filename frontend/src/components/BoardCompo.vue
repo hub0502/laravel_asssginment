@@ -3,25 +3,26 @@
 </template>
 
 <script>
-import * as boardApi from "@/api/board.js";
+import * as boardsApi from "@/api/boards.js";
 export default {
   data() {
     return {
-      title: "",
-      conent: "",
+      boardList: [],
     };
   },
-  methods: {
-    write() {
-      boardApi
-        .store(this.title, this.content)
-        .then((res) => {
+  methods: {},
+  mounted() {
+    boardsApi
+      .index()
+      .then((res) => {
+        if (res.status == 200) {
+          this.boardList.push(res);
           console.log(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   },
 };
 </script>

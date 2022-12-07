@@ -9,7 +9,7 @@ class BoardController extends Controller
 {
     //
     public function __construct(){
-        $this->middleware('auth:api', ['except' => ['index']]);
+        $this->middleware('auth:api', ['except' => ['index', 'store']]);
     }
 
     public function index(){
@@ -29,6 +29,7 @@ class BoardController extends Controller
         $board = Board::create([
             'title' => $request->title,
             'content' => $request->content,
+            'userId' => $request->userId
         ]);
 
         return response()->json([

@@ -1,6 +1,5 @@
 <template>
   <div>
-    <board-compo></board-compo>
     <nav class="p-30">
       <router-link to="/">Home</router-link><a> | </a>
       <router-link to="/about">About</router-link> <a> | </a>
@@ -15,43 +14,50 @@
       <a> | </a>
       <router-link to="/register">register</router-link>
     </nav>
-    <div
-      id="menuButton"
-      class="w-[20vw] h-[10vh] rounded-full max-w-[200px] text-[30pt] leading-[10vh]"
-      click="menuFun()"
-    >
-      menu
+
+    <div v-if="this.$modalOpened">
+      <write-board-compo></write-board-compo>
     </div>
+    {{ opened }}
+
+    <div
+      id="boardModalBtn"
+      class="w-[15vw] h-[7vh] rounded-full max-w-[150px] min-h-[60px] text-[30pt] leading-[10vh]"
+      @click="modalOpenFunc()"
+    >
+      new
+    </div>
+
     <router-view />
   </div>
 </template>
 
 <script>
-import BoardCompo from "./components/BoardCompo.vue";
-import BoardCompoVue from "./components/BoardCompo.vue";
+import WriteBoardCompo from "./components/WriteBoardCompo.vue";
 export default {
-  components: { BoardCompo },
-  component: {
-    BoardCompoVue,
+  components: {
+    WriteBoardCompo,
   },
   data() {
     return {
       cookies: {},
-      menuVal: false,
+      opened: this.$modalOpened,
     };
   },
-  mounted() {},
   methods: {
-    logout() {},
-    menuFun() {
-      this.menuVal = !this.menuVal;
-      print(this.menuVal);
+    modalOpenFunc() {
+      this.$modalOpened = !this.$modalOpened;
+      this.opened = this.$modalOpened;
+      console.log(this.opened);
     },
   },
 };
 </script>
 
 <style>
+* {
+  color: black;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -74,16 +80,19 @@ board {
 nav a.router-link-exact-active {
   color: #42b983;
 }
-#menuButton {
+#boardModalBtn {
   background-color: #40f7a5;
   color: #2c3e50;
+  line-height: 7vh;
   box-shadow: 1px 1px 10px 1px #98c4b0;
-  line-height: 10vh;
   font-size: clamp(15pt, 2.5vw, 30pt);
   font-weight: bold;
   cursor: pointer;
   position: fixed;
   right: 5%;
   bottom: 10%;
+}
+#modal_bg {
+  opacity: 70%;
 }
 </style>
