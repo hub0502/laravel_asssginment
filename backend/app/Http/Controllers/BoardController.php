@@ -11,7 +11,7 @@ class BoardController extends Controller
 {
     //
     public function __construct(){
-        $this->middleware('auth:api', ['except' => ['index', 'show']]);
+        $this->middleware('auth:api', ['except' => ['index', 'show','destroy', 'update']]);
     }
 
     public function index(){

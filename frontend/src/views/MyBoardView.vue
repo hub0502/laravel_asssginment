@@ -7,26 +7,30 @@
     <board-compo :boardAbout="data" :parent="'myBoard'"> </board-compo>
     <button
       class="absolute top-[-30px] right-0 bg-[#40f7a5] color-[#2c3e50] rounded-[30px] p-2"
+      @click="setData(data)"
     >
       update
     </button>
     <button class="text-red-500 font-bold" @click="delData(data.id)">X</button>
   </div>
 
-  <div></div>
+  <div v-if="modalOpen">
+    <board-update-compo :data="sendBoard"></board-update-compo>
+  </div>
 </template>
 
 <script>
 import * as boards from "@/api/boards.js";
 import BoardCompo from "@/components/BoardCompo.vue";
+import BoardUpdateCompo from "@/components/BoardUpdateCompo.vue";
 export default {
-  components: { BoardCompo },
-  componenets: {
-    BoardCompo,
-  },
+  components: { BoardCompo, BoardUpdateCompo },
+
   data() {
     return {
       boardList: [],
+      modalOpen: false,
+      sendBoard: Array,
     };
   },
   methods: {
@@ -47,6 +51,10 @@ export default {
         console.log(res);
         window.location.href = "/myboard";
       });
+    },
+    setData(data) {
+      this.sendBoard = data;
+      this.modalOpen = !this.modalOpen;
     },
   },
   mounted() {

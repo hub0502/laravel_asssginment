@@ -27,3 +27,10 @@ export async function shows() {
 export async function destroy(id) {
   return http.delete(`/board/${id}`, getToken());
 }
+
+export async function update(title, content, id) {
+  return http.put(`/board/${id}`, {
+    title: title,
+    content: content,
+  });
+}

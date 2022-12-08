@@ -67,23 +67,20 @@ export default {
   },
   methods: {
     login() {
-      authApi
-        .login(this.email, this.password)
-        .then((res) => {
-          if (res.status == 200) {
-            alert("logged");
-
-            let expires = new Date();
-            expires.setMinutes(expires.getMinutes() + 60);
-            document.cookie = `logged=${
-              res.data.authorisation.token
-            };expires=${expires.toGMTString()}`;
-            window.location.href = "/";
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      authApi.login(this.email, this.password).then((res) => {
+        if (res.status == 200) {
+          alert("logged");
+          this.setToken(res);
+        }
+      });
+    },
+    setToken(res) {
+      let expires = new Date();
+      expires.setMinutes(expires.getMinutes() + 60);
+      document.cookie = `logged=${
+        res.data.authorisation.token
+      };expires=${expires.toGMTString()}`;
+      window.location.href = "/";
     },
   },
 };
