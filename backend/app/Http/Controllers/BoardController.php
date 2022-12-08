@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+
 use App\Models\Board;
 
 class BoardController extends Controller
 {
     //
     public function __construct(){
-        $this->middleware('auth:api', ['except' => ['index', 'show', 'destroy']]);
+        $this->middleware('auth:api', ['except' => ['index', 'show']]);
     }
 
     public function index(){
@@ -50,6 +51,15 @@ class BoardController extends Controller
         return response()->json([
             'status' => 'success',
             'board' => $board,
+        ]);
+    }
+    
+    public function shows(Request $request){
+        $request = Auth::authenticate($request->token);
+        $boards = Board::all()->where('userId', $request->id);
+        return response()->json([
+            'status' => 'success',
+            'boards' => $boards
         ]);
     }
 

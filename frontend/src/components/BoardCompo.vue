@@ -2,9 +2,12 @@
   <div>
     title : {{ boardAbout.title }} <br />
     content : {{ boardAbout.content }} <br />
-    creater : {{ boardAbout.userId }} <br />
-    created_at : {{ boardAbout.created_at }} <br />
-    updated_at : {{ boardAbout.updated_at }}
+
+    <div v-if="parent !== 'myBoard'">
+      creater : {{ boardAbout.userId }} <br />
+      created_at : {{ boardAbout.created_at }} <br />
+      updated_at : {{ boardAbout.updated_at }}
+    </div>
   </div>
 </template>
 
@@ -12,6 +15,7 @@
 export default {
   props: {
     boardAbout: Array,
+    parent: String,
   },
 };
 </script>

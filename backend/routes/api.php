@@ -26,13 +26,13 @@ Route::controller(AuthController::class)->group(function(){
     Route::post('logout', 'logout');
     Route::post('refresh', 'refresh');
     Route::post('get_user', 'get_user');
-    Route::get('get_token', 'get_token');
 });
 
 Route::controller(BoardController::class)->group(function(){
     Route::get('boards', 'index');
     Route::post('board', 'store');
     Route::get('board/{id}', 'show');
+    Route::post('boards', 'shows');
     Route::put('board/{id}', 'update');
     Route::delete('board/{id}', 'destroy');
 });

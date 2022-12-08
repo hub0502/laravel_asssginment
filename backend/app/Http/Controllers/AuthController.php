@@ -31,6 +31,8 @@ class AuthController extends Controller
         }
 
         $user = Auth::user();
+        
+
         return response()->json([
             'status' => 'success',
             'user' => $user,
@@ -105,10 +107,6 @@ class AuthController extends Controller
         return response()->json(['user' => $user]);
     }
 
-    public function get_token(Request $request){
-        return response()->json([
-            'cookie' => $request->header,
-        ]);
-    }
+   
     
 }
