@@ -3,13 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Http\Models\Chat;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Chat;
+use Illuminate\Support\Facades\DB;
 
 class ChatController extends Controller
 {
 
     public function __construct(){
-        $this->middleware('auth:api', ['except'=>['index']]);
+        $this->middleware('auth:api', ['except'=>['index', 'show', 'destroy']]);
     }
 
     /**
@@ -48,14 +50,18 @@ class ChatController extends Controller
     public function store(Request $request)
     {
         //
-        $reqeust->validate([
-            'chat_content' => "required|string",
-            'user_id' => 'required|integer'
+        $request->validate([
+            'chat_content' => 'required|string',
+            'board_id' => 'required|integer',
+            'token' => 'required|string'
         ]);
+        
+        $user = Auth::authenticate($request->token);
 
         $chat = Chat::create([
             'chat_content' => $request->chat_content,
-            'user_id' => $request->user_id
+            'user_id' => $user->id,
+            'board_id' => $request->board_id
         ]);
 
         return response()->json([
@@ -70,10 +76,10 @@ class ChatController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($board_id)
     {
         //
-        $chat = Chat::find($id);
+        $chat = Chat::all()->where('board_id', $board_id);
         return response()->json([
             'status' => 'success',
             'chat' => $chat
@@ -126,16 +132,28 @@ class ChatController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
-        //
-        $chat = Chat::find($id);
-        $chat->delete();
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'chat deleted successfully',
-            'chat' => $chat,
+        $request->validate([
+            'token' => 'required|string'
         ]);
+
+        //
+        $chat = Chat::all()->where('id', '=', $id)->first();
+        $user = Auth::authenticate($request->token);
+        if($user->id == $chat->user_id){
+            DB::table('chats')->where('id', '=', $id)->delete();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'chat deleted successfully',
+                'chat' => $chat,
+            ]);
+        } else{
+            return response()->json([
+                'status' => 'not access user'
+            ]);
+        }
+        
+        
     }
 }

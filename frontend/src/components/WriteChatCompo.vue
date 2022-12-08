@@ -37,24 +37,23 @@
 </template>
 
 <script>
-import * as boardApi from "@/api/boards.js";
+import * as chats from "@/api/chats.js";
 import { getToken } from "@/api/token";
 export default {
   data() {
     return {
-      title: "",
       content: "",
     };
   },
   methods: {
     write() {
       // let self = this;
-      boardApi
-        .store(this.title, this.content, getToken())
+      chats
+        .store(this.content, this.$route.params.id, getToken())
         .then((res) => {
           if (res.status == 200) {
-            alert("add post");
-            window.location.href = "/";
+            alert("add chats");
+            window.location.href = `/about/${this.$route.params.id}`;
           }
         })
         .catch((err) => {
@@ -65,8 +64,4 @@ export default {
 };
 </script>
 
-<style>
-#modal_bg {
-  opacity: 70%;
-}
-</style>
+<style></style>

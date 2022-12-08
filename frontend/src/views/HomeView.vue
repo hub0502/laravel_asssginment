@@ -9,7 +9,7 @@
         :to="{ name: 'about', params: { id: data.id } }"
       >
         <p>{{ data.id }}</p>
-        <p v-if="data.content.length < 15">{{ data.content }}</p>
+        <p v-if="data.content.length < 15">{{ data.title }}</p>
         <p v-else>{{ data.content.substr(0, 15) }}...</p>
         <p class="">{{ data.userId }}</p>
       </router-link>

@@ -37,10 +37,10 @@ Route::controller(BoardController::class)->group(function(){
     Route::delete('board/{id}', 'destroy');
 });
 
-Route::controller(BoardController::class)->group(function(){
-    Route::get('boards', 'index');
-    Route::post('board', 'store');
-    Route::get('board/{id}', 'show');
-    Route::put('board/{id}', 'update');
-    Route::delete('board/{id}', 'destroy');
+Route::controller(ChatController::class)->group(function(){
+    Route::get('chats', 'index');
+    Route::post('chat', 'store');
+    Route::get('chat/{board_id}', 'show');
+    // Route::put('board/{id}', 'update');
+    Route::post('chat/{id}', 'destroy');
 });
