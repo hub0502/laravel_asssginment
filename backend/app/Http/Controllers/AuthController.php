@@ -41,7 +41,8 @@ class AuthController extends Controller
             'authorisation' => [
                 'token' => $token,
                 'type' => 'bearer'
-            ]
+            ],
+            'ip' => $request->ip()
         ]);
     }
 
